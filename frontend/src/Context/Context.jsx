@@ -1,6 +1,5 @@
 import React from "react";
 import { createContext, useState } from "react";
-import { useParams } from "react-router-dom";
 
 export const Context = createContext({
   post: [],
@@ -15,6 +14,7 @@ export const Context = createContext({
 
 export const ContextProvider = ({ children }) => {
   const [post, setPost] = useState([]);
+
   const getPost = async () => {
     const response = await fetch(`http://127.0.0.1:8000/api/get-posts`, {
       method: "GET",
@@ -25,8 +25,6 @@ export const ContextProvider = ({ children }) => {
   };
 
   const [donnees, setDonnees] = useState([]);
-
-  const params = useParams();
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -40,7 +38,7 @@ export const ContextProvider = ({ children }) => {
 
   const getUserInformation = async () => {
     const response = await fetch(
-      `http://127.0.0.1:8000/api/information/${params.nom}`,
+      `http://127.0.0.1:8000/api/information/${nom}`,
       {
         method: "GET",
       }

@@ -4,10 +4,12 @@ import MuiAlert from "@mui/material/Alert";
 import DisplayingPost from "./DisplayingPost";
 import { Context } from "../Context/Context";
 
-const Section = ({ nom }) => {
+const Section = () => {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
   const [message, setMessage] = useState("");
+
+  const { getPost, nom } = useContext(Context);
 
   const { donnees } = useContext(Context);
 
@@ -35,6 +37,10 @@ const Section = ({ nom }) => {
       setImage("");
       localStorage.setItem("post", JSON.stringify(data.post));
       if (data.message === "post created") {
+        setMessage(data.message);
+      }
+
+      if (data.message === "post created successfully") {
         setMessage(data.message);
       }
       getPost();

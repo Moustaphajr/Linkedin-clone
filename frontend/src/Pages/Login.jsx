@@ -49,7 +49,7 @@ const Login = () => {
       if (data.message === "you are logged in") {
         setElement(element.push(data.user));
         localStorage.setItem("user", JSON.stringify(element));
-        navigate(`/welcome/${nom}`);
+        navigate(`/welcome`);
       }
     } catch (err) {
       console.log(err);

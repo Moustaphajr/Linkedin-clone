@@ -16,6 +16,8 @@ class VerifyCsrfToken extends Middleware
         "http://127.0.0.1:8000/api/login",
         "http://127.0.0.1:8000/api/create-post/*",
         "http://127.0.0.1:8000/api/create-comment/*",
+        "http://127.0.0.1:8000/api/delete-post/*",
+        "http://127.0.0.1:8000/api/delete-comment/*",
 
 
 

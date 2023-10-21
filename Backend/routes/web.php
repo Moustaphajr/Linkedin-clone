@@ -31,3 +31,5 @@ Route::get('/api/get-posts', [PostController::class, "GetPosts"]);
 Route::get('/api/get-user', [AuthController::class, "GetUser"]);
 Route::post('/api/create-comment/{name}/{post_id}', [makeCommentController::class, "makeComment"]);
 Route::get('/api/get-comments', [makeCommentController::class, "getComments"]);
+Route::delete('/api/delete-post/{name}/{post_id}', [PostController::class, "DeletePost"]);
+Route::delete('/api/delete-comment/{name}/{comment_id}', [makeCommentController::class, "deleteComment"]);

@@ -41,15 +41,15 @@ class PostController extends Controller
                 ]);
             }
 
-            $post = Post::create([
+            $createPost = Post::create([
                 'title' => $title,
                 'user_id' => $username->id,
                 'user_avatar' => $post_related_avatar,
                 'user_name' => $post_related_name,
             ]);
             return response()->json([
-                'message' => 'post created',
-                'post' => $post,
+                'message' => 'post created successfully',
+                'post' => $createPost,
             ]);
         } catch (\Throwable $th) {
             return response()->json([
@@ -69,6 +69,27 @@ class PostController extends Controller
                     'posts' => $posts,
                 ]);
             }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
+
+
+    public function DeletePost($name, $post_id)
+    {
+        try {
+            $post = Post::where('user_name', $name)->where('id', $post_id)->first();
+            if ($post) {
+                $post->delete();
+                return response()->json([
+                    'message' => 'post deleted successfully',
+                ]);
+            }
+            return response()->json([
+                'message' => 'you cannot delete this post',
+            ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage(),

@@ -18,6 +18,8 @@ class makeCommentController extends Controller
             $post = Post::where('id', $post_id)->first();
             $username = User::where('name', $name)->first();
             $user_id = $username->id;
+            $user_name = $username->name;
+            $user_avatar = $username->avatar;
             $comment = $request->input('comment');
 
             $validated = $request->validate([
@@ -28,8 +30,9 @@ class makeCommentController extends Controller
                 $comment = Comment::Create([
                     'comment' => $comment,
                     'user_id' => $user_id,
-                    'post_id' => $post->id
-
+                    'post_id' => $post->id,
+                    'user_name' => $user_name,
+                    'user_avatar' => $user_avatar
 
                 ]);
                 if ($comment) {
@@ -60,16 +63,21 @@ class makeCommentController extends Controller
             ->select("posts.*")
             ->get();
 
-
-
-
-
-
-
         $comments = DB::table('posts')->join('comments', 'posts.id', '=', 'comments.post_id')->get();
         return response()->json([
             'comments' => $comments,
             ''
+
+        ]);
+    }
+
+    public function deleteComment($name, $comment_id)
+    {
+
+        $comment = Comment::where('user_name', $name)->where('id', $comment_id)->first();
+        $comment->delete();
+        return response()->json([
+            'message' => 'comment deleted successfully',
 
         ]);
     }
