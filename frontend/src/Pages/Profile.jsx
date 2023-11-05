@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
 
 const Profile = () => {
   const params = useParams();
-  const [donnees, setDonnees] = useState([]);
 
   const user = JSON.parse(localStorage.getItem("user"));
 
   const nom = user?.map((item) => {
     return item.name;
   });
+
+  const avatar = user?.map((item) => item?.avatar);
+  const profession = user?.map((item) => item?.profession);
 
   useEffect(() => {
     getUserProfile();
@@ -29,33 +30,66 @@ const Profile = () => {
   };
 
   return (
-    <div>
-      <nav className="flex justify-between items-center">
-        <div>
-          <img className="w-20 h-10" src="../images/signupimage.png" alt="" />
+    <div
+      className="hidden md:block lg:block"
+      style={{ backgroundColor: "#F4F2EE" }}
+    >
+      <nav className="flex justify-around items-center mt-2 bg-white">
+        <div className="flex space-x-4 items-center">
+          <Link to="/">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="1em"
+              viewBox="0 0 448 512"
+              className="w-12 h-12 ml-4"
+              style={{
+                fill: "#235fc7",
+              }}
+            >
+              <path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z" />
+            </svg>
+          </Link>
+          <input
+            type="text"
+            placeholder="Search"
+            className="border rounded w-64 p-2"
+          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+            />
+          </svg>
         </div>
-
-        <div className="mr-16">
-          <ul className="flex space-x-4">
-            <li>
-              <Link to="">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-              </Link>
+        <div className="">
+          <ul className="flex  space-x-6">
+            <li className="flex flex-col items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+                />
+              </svg>
+              <span className="text-sm">Accueil</span>
             </li>
-            <li>
+
+            <li className="flex flex-col items-center">
               <Link to="">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -72,30 +106,81 @@ const Profile = () => {
                   />
                 </svg>
               </Link>
+              <span className="text-sm">offre d'emploi</span>
             </li>
-            <li>
-              <Link to={`/welcome/${nom}`}>Profile</Link>
+          </ul>
+        </div>
+
+        <div className="mr-16">
+          <ul className="">
+            <li className="flex ">
+              <Link to={"/profile/" + nom}>
+                <img
+                  className="rounded-full w-12 h-12 object-cover rounded-full"
+                  src={"http://127.0.0.1:8000/uploads/" + avatar}
+                  alt=""
+                />
+              </Link>
+
+              <div className="dropdown">
+                <label
+                  tabIndex={0}
+                  className="btn m-1 bg-white border border-white"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                    />
+                  </svg>
+                </label>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                >
+                  <li></li>
+                </ul>
+              </div>
             </li>
           </ul>
         </div>
       </nav>
-      <div className="mt-20 ">
-        {donnees &&
-          Object.values(donnees).map((donnee) => (
-            <div className="w-full py-4 border-2 border-gray-200 rounded-lg shadow-lg flex justify-around items-center h-auto border-2 border-gray-200 rounded-lg shadow-lg">
-              <div>
+      <div className="container ml-20 mt-10 ">
+        <div
+          className="grid grid-cols-5 gap-36
+        
+       "
+        >
+          <div className="col-span-3 ml-20  ">
+            <div className=" w-[740px] h-96 bg-white  rounded-lg shadow-lg border-2 border-gray-300">
+              <div
+                className="w-full h-40  rounded-lg shadow-lg border-2 border-gray-300"
+                style={{ backgroundColor: "#A0B4B7" }}
+              >
                 <img
-                  className="w-64 h-64 left-36  rounded-full object-cover "
-                  src={"http://127.0.0.1:8000/uploads/" + donnee?.avatar}
+                  src={"http://127.0.0.1:8000/uploads/" + avatar}
+                  className="mt-16 ml-5 w-36 h-36 rounded-full object-cover"
+                  alt=""
                 />
               </div>
-              <div className="card-body">
-                <h2 className="card-title">{donnee?.name}</h2>
-                <h2 className="card-title">{donnee?.email}</h2>
-                <p className="card-text">{donnee?.resume}.</p>
+              <div className=" ml-10 mt-16">
+                <p>{nom}</p>
+                <p>{profession}</p>
               </div>
             </div>
-          ))}
+          </div>
+          <div className="col-span-2 mr-20">
+            <div className="w-64 h-96 rounded-lg shadow-lg border-2 border-gray-300"></div>
+          </div>
+        </div>
       </div>
     </div>
   );

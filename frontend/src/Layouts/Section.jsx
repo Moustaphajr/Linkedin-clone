@@ -9,7 +9,7 @@ const Section = () => {
   const [image, setImage] = useState("");
   const [message, setMessage] = useState("");
 
-  const { getPost, nom } = useContext(Context);
+  const { getPost, nom, loading } = useContext(Context);
 
   const { donnees } = useContext(Context);
 
@@ -51,12 +51,20 @@ const Section = () => {
 
   return (
     <div className="col-span-2  ">
+      {loading && (
+        <div className="flex justify-center mt-16">
+          <div className="flex items-center space-x-2">
+            <span className="loading loading-spinner loading-lg"></span>
+            <span>Loading</span>
+          </div>
+        </div>
+      )}
       <div className="flex justify-center mt-16">
         <div className=" w-full h-auto border-1 border-black bg-white rounded-lg shadow-lg">
           <form action="" className="mt-6">
             <div className="flex justify-center ">
               <textarea
-                className="w-96  mt-8 h-16 p-4 border-2 border-gray-200 rounded-full cursor-pointer "
+                className="w-96  mt-8 h-16 p-4 border-2 border-gray-200 rounded-full cursor-pointer bg-white "
                 type="text"
                 placeholder="want to Post ?"
                 onClick={() =>
@@ -94,7 +102,6 @@ const Section = () => {
         <dialog id="my_modal_1" className="modal">
           <div className="modal-box h-96">
             <form method="dialog " className="flex justify-end">
-              {/* if there is a button in form, it will close the modal */}
               <button className="btn">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +139,7 @@ const Section = () => {
                   <input
                     type="file"
                     className="file-input file-input-ghost w-full max-w-xs mt-4"
-                    defaultValueue={image}
+                    defaultValue={image}
                     onChange={(e) => setImage(e.target.files[0])}
                     name="image"
                   />

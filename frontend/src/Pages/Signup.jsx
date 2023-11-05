@@ -52,7 +52,7 @@ const Signup = () => {
       const data = await response.json();
 
       if (data.message === "user created") {
-        navigate("/login");
+        navigate("/");
       }
       if (data.message === "The name field is required. (and 4 more errors)") {
         setErrorMessage(data.message + " " + "Please fill all the fields");

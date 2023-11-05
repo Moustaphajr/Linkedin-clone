@@ -21,7 +21,7 @@ const Sidebar1 = () => {
     <div className="col-span-1 mt-10 ml-6 ">
       <div className="w-64 h-96 border-1 border-black bg-white rounded-xl shadow-lg">
         <div className="mt-4 ">
-          <h3 className="text-md font-semibold text-center ">
+          <h3 className="text-md font-semibold text-center text-gray-500 ">
             Ajouter à votre fil d'actualité{" "}
           </h3>
           <div>
@@ -34,8 +34,8 @@ const Sidebar1 = () => {
                     alt=""
                   />
                   <div className="flex flex-col space-y-2 items-center ">
-                    <p className="ml-4 text-sm">{user.name}</p>
-                    <small>{user.profession}</small>
+                    <p className="ml-4 text-sm text-gray-500">{user.name}</p>
+                    <small className="text-gray-500">{user.profession}</small>
                     <button className=" border-2 bg-blue-500 flex justify-center border-blue-500 pr-4 items-center  text-white rounded-lg ">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

@@ -96,4 +96,32 @@ class PostController extends Controller
             ]);
         }
     }
+
+
+    public function updatePost(Request $request, $name, $post_id)
+    {
+        $update = Post::where('user_name', $name)->where('id', $post_id)->first();
+        $post_user_name = $update->user_name;
+        $post_user_avatar = $update->user_avatar;
+        $post_user_id = $update->user_id;
+        $post_title = $request->input('title');
+        $post_image = $request->file('image');
+        $post_image_extension = $post_image->getClientOriginalExtension();
+        if ($post_image) {
+            if ($post_image_extension == 'png' || $post_image_extension == 'jpg' || $post_image_extension == 'jpeg') {
+                $post_image_name = time() . '.' . $post_image_extension;
+                $post_image->move('post/', $post_image_name);
+                $update->update([
+                    'title' => $post_title,
+                    'user_id' => $post_user_id,
+                    'user_avatar' => $post_user_avatar,
+                    'user_name' => $post_user_name,
+                    'image' => $post_image_name
+                ]);
+                return response()->json([
+                    'message' => 'post updated successfully',
+                ]);
+            }
+        }
+    }
 }

@@ -1,17 +1,36 @@
 import React, { useContext } from "react";
 import { useEffect, useState } from "react";
+import MuiAlert from "@mui/material/Alert";
 import { Context } from "../Context/Context";
 
 const DisplayingPost = ({ donnees }) => {
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
   const avatar = Object.values(donnees).map((donnee) => donnee?.avatar);
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState("");
+  const [message, setMessage] = useState("");
 
   const [comment, setComment] = useState("");
   const [getCom, setCom] = useState("");
   const { getPost, post, nom } = useContext(Context);
   const formData = new FormData();
 
+  formData.append("title", title);
+  formData.append("image", image);
+
   const [uid, setUid] = useState("");
   const id = post.map((item) => item.id);
+  const [postId, setPostId] = useState("");
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    document.getElementById("my_modal_5").showModal();
+    const _id = id.find((item) => item === parseInt(e.target.id));
+    setPostId(_id);
+  };
 
   useEffect(() => {
     getPost();
@@ -22,6 +41,25 @@ const DisplayingPost = ({ donnees }) => {
     setComment(e.target.value);
     const _id = id.find((item) => item === parseInt(e.target.id));
     setUid(_id);
+  };
+
+  const handleUpdatePost = async (e) => {
+    e.preventDefault();
+    const response = await fetch(
+      `http://127.0.0.1:8000/api/update-post/${nom}/${postId}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const data = await response.json();
+    if (data.message === "post updated successfully") {
+      setMessage(data.message);
+    }
+    setTitle("");
+    setImage(null);
+    getPost();
   };
 
   const deletePost = async (e, id, nom) => {
@@ -95,7 +133,9 @@ const DisplayingPost = ({ donnees }) => {
                       alt=""
                     />
                   )}
-                  <span>{post?.user_name}</span>
+                  <span className="font-semibold text-gray-600">
+                    {post?.user_name}
+                  </span>
                 </div>
                 <div className="flex space-x-2 ">
                   <a href="" onClick={(e) => deletePost(e, post.id, nom)}>
@@ -105,7 +145,7 @@ const DisplayingPost = ({ donnees }) => {
                       viewBox="0 0 24 24"
                       strokeWidth="1.5"
                       stroke="currentColor"
-                      className="w-6 h-6"
+                      className="w-6 h-6 "
                     >
                       <path
                         strokeLinecap="round"
@@ -122,6 +162,8 @@ const DisplayingPost = ({ donnees }) => {
                       strokeWidth="1.5"
                       stroke="currentColor"
                       className="w-6 h-6"
+                      id={post.id}
+                      onClick={handleClick}
                     >
                       <path
                         strokeLinecap="round"
@@ -133,8 +175,12 @@ const DisplayingPost = ({ donnees }) => {
                 </div>
               </div>
               <div className="flex justify-between items-center">
-                <h3 className="ml-4">{post?.title}</h3>
-                <small className="mr-4">{post?.created_at}</small>
+                <h3 className="ml-4 font-semibold text-gray-600">
+                  {post?.title}
+                </h3>
+                <small className="mr-4 font-semibold text-black">
+                  {post?.created_at}
+                </small>
               </div>
               <img
                 src={"http://127.0.0.1:8000/post/" + post?.image}
@@ -149,7 +195,7 @@ const DisplayingPost = ({ donnees }) => {
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-6 h-6"
+                    className="w-6 h-6"
                   >
                     <path
                       strokeLinecap="round"
@@ -165,7 +211,7 @@ const DisplayingPost = ({ donnees }) => {
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-6 h-6"
+                    className="w-6 h-6"
                   >
                     <path
                       strokeLinecap="round"
@@ -192,7 +238,7 @@ const DisplayingPost = ({ donnees }) => {
                 </span>
               </div>
               <div className="mt-4 ml-4">
-                <span>Commentaires</span>
+                <span className="text-black font-semibold">Commentaires</span>
                 <div className="mt-4">
                   {getCom &&
                     getCom.map((comment) =>
@@ -207,8 +253,12 @@ const DisplayingPost = ({ donnees }) => {
                               alt=""
                               className="w-8 h-8 rounded-full object-cover"
                             />
-                            <span>{comment.user_name}</span>
-                            <small>{comment.comment}</small>
+                            <span className="font-semibold text-gray-600">
+                              {comment.user_name}
+                            </span>
+                            <small className="text-gray-600 font-semibold ">
+                              {comment.comment}
+                            </small>
                             <a href="">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -240,7 +290,7 @@ const DisplayingPost = ({ donnees }) => {
                   <input
                     type="text"
                     placeholder="Ajouter un commentaire"
-                    className="mt-4 w-full border rounded border-white p-2"
+                    className="mt-4 w-full border rounded border-white p-2 bg-white"
                     onChange={handleChange}
                     value={comment}
                     name="comment"
@@ -254,6 +304,63 @@ const DisplayingPost = ({ donnees }) => {
                 </form>
               </div>
             </div>
+            <dialog
+              id="my_modal_5"
+              className="modal modal-bottom sm:modal-middle"
+            >
+              <div className="modal-box">
+                <form method="dialog " className="flex justify-end">
+                  <button className="btn">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </form>
+                <div className="">
+                  {message && <Alert severity="success">{message}</Alert>}
+                  <form
+                    action=""
+                    className=""
+                    encType="multipart/form-data"
+                    onSubmit={handleUpdatePost}
+                  >
+                    <div className="flex flex-col items-center">
+                      <textarea
+                        className="w-96  mt-8 h-16 p-4 border-2 border-gray-200 rounded-full "
+                        type="text"
+                        placeholder="want to Post ?"
+                        onChange={(e) => setTitle(e.target.value)}
+                        value={title}
+                        name="title"
+                      />
+                      <input
+                        type="file"
+                        className="file-input file-input-ghost w-full max-w-xs mt-4"
+                        defaultValue={image}
+                        onChange={(e) => setImage(e.target.files[0])}
+                        name="image"
+                      />
+                    </div>
+                    <div className="flex justify-end ">
+                      <button className="mt-4  p-2 w-16 border-2 border-gray-200 rounded-md bg-blue-600 text-white">
+                        update
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </dialog>
           </div>
         ))}
     </div>

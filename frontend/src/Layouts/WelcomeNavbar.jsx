@@ -1,12 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const WelcomeNavbar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate();
+  const logout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("user");
+    localStorage.removeItem("post");
+    navigate("/");
+  };
 
   const avatar = user?.map((item) => item.avatar);
+  const nom = user?.map((item) => item.name);
 
   return (
-    <div className="mt-2 h-16 ">
+    <div className="bg-white ">
       <nav className="flex justify-around items-center">
         <div className="flex space-x-4 items-center">
           <svg
@@ -23,7 +31,7 @@ const WelcomeNavbar = () => {
           <input
             type="text"
             placeholder="Search"
-            className="border rounded w-64 p-2"
+            className="border rounded w-64 p-2 bg-white"
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +65,9 @@ const WelcomeNavbar = () => {
                   d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
                 />
               </svg>
-              <span className="text-sm">Accueil</span>
+              <span className="text-sm text-gray-500">
+                <Link to={"/welcome"}>Accueil</Link>
+              </span>
             </li>
 
             <li className="flex flex-col items-center">
@@ -77,7 +87,9 @@ const WelcomeNavbar = () => {
                   />
                 </svg>
               </Link>
-              <span className="text-sm">offre d'emploi</span>
+              <span className="text-sm text-gray-500">
+                <Link to={"/emploi"}>offre d'emploi</Link>
+              </span>
             </li>
           </ul>
         </div>
@@ -85,11 +97,14 @@ const WelcomeNavbar = () => {
         <div className="mr-16">
           <ul className="">
             <li className="flex ">
-              <img
-                className="rounded-full w-12 h-12 object-cover rounded-full"
-                src={"http://127.0.0.1:8000/uploads/" + avatar}
-                alt=""
-              />
+              <Link to={"/profile/" + nom}>
+                <img
+                  className="rounded-full w-12 h-12 object-cover rounded-full"
+                  src={"http://127.0.0.1:8000/uploads/" + avatar}
+                  alt=""
+                />
+              </Link>
+
               <div className="dropdown">
                 <label
                   tabIndex={0}
@@ -115,10 +130,7 @@ const WelcomeNavbar = () => {
                   className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
                 >
                   <li>
-                    <a>Item 1</a>
-                  </li>
-                  <li>
-                    <a>Item 2</a>
+                    <a onClick={logout}>Deconnexion</a>
                   </li>
                 </ul>
               </div>

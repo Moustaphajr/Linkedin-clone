@@ -117,4 +117,19 @@ class AuthController extends Controller
             ]);
         }
     }
+
+    public function logout()
+    {
+        try {
+            Auth::logout();
+            return response()->json([
+                'message' => 'you are logged out',
+            ]);
+        } catch (\Throwable $th) {
+
+            return response()->json([
+                'message' => $th->getMessage(),
+            ]);
+        }
+    }
 }

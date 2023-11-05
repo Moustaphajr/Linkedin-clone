@@ -1,6 +1,7 @@
 import React from "react";
 import { useContext } from "react";
 import { Context } from "../Context/Context";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const { nom, avatar } = useContext(Context);
@@ -17,12 +18,12 @@ const Sidebar = () => {
         </div>
         <hr className="mt-4" />
         <div>
-          <p className="ml-4 mt-4 text-center">Bonjour, {nom}</p>
+          <p className="ml-4 mt-4 text-center text-gray-500">Bonjour, {nom}</p>
           <hr className="mt-4" />
           <p className="ml-4 mt-4 flex space-x-4  ">
             <div>
               <span className="text-sm text-gray-500">Relation</span> <br />{" "}
-              <span className="font-bold text-sm ">
+              <span className="font-bold text-sm text-gray-500 ">
                 développer votre réseau
               </span>
             </div>
@@ -57,7 +58,9 @@ const Sidebar = () => {
                 d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
               />
             </svg>
-            <span className="text-sm font-semibold">Mes elements</span>
+            <span className="text-sm font-semibold text-gray-500">
+              Mes elements
+            </span>
           </div>
         </div>
       </div>
@@ -86,9 +89,30 @@ const Sidebar = () => {
         </div>
         <hr className="mt-4" />
 
-        <p className=" mt-6 text-sm font-semibold text-center">
+        <p className=" mt-6 text-sm font-semibold text-center text-gray-500">
           découvrir plus
         </p>
+      </div>
+      <div className="mt-6 ">
+        <Link to={"/emploi/new"} className="flex items-center space-x-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"
+            />
+          </svg>
+          <span className="text-sm font-semibold text-gray-500">
+            Poster un offre d'emploi
+          </span>
+        </Link>
       </div>
     </div>
   );

@@ -3,9 +3,12 @@ import { createContext, useState } from "react";
 
 export const Context = createContext({
   post: [],
+  loading: true,
+  jobs: [],
   setPost: () => {},
   getPost: () => {},
   setDonnees: () => {},
+  getJobList: () => {},
   donnees: [],
   avatar: [],
   nom: [],
@@ -14,14 +17,35 @@ export const Context = createContext({
 
 export const ContextProvider = ({ children }) => {
   const [post, setPost] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [jobs, setJobs] = useState([]);
 
-  const getPost = async () => {
-    const response = await fetch(`http://127.0.0.1:8000/api/get-posts`, {
+  const getJobList = async () => {
+    const response = await fetch("http://127.0.0.1:8000/api/get-jobs", {
       method: "GET",
     });
+
     const data = await response.json();
-    setPost(data.posts);
-    console.log(data.posts);
+    if (data.Emplois) {
+      setJobs(data.Emplois);
+    }
+  };
+
+  const getPost = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/get-posts`, {
+        method: "GET",
+      });
+      const data = await response.json();
+      if (data.posts) {
+        setLoading(false);
+        setPost(data.posts);
+      }
+
+      console.log(data.posts);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const [donnees, setDonnees] = useState([]);
@@ -56,6 +80,9 @@ export const ContextProvider = ({ children }) => {
         avatar: avatar,
         nom: nom,
         getUserInformation,
+        loading: loading,
+        getJobList,
+        jobs: jobs,
       }}
     >
       {children}
